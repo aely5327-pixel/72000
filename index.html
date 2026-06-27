@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>烙角｜7/20 台北快閃點餐系統</title>
+    <!-- 引入 Tailwind CSS 進行美化 -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        body { background-color: #fcfbfa; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        .brand-color { color: #5c3a21; }
+        .brand-bg { background-color: #5c3a21; }
+        .brand-bg:hover { background-color: #4a2e1a; }
+    </style>
+</head>
+<body class="py-8 px-4 sm:px-6 lg:px-8">
+
+    <div class="max-w-md mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-amber-100">
+        <!-- 橫幅與主視覺 -->
+        <div class="brand-bg p-6 text-center text-white">
+            <h1 class="text-2xl font-bold tracking-wider">烙 角 ∙ 快閃預訂</h1>
+            <p class="text-sm opacity-80 mt-1">7/20（一）臺北中山區康樂公園周邊</p>
+        </div>
+
+        <!-- 重要公告 -->
+        <div class="p-6 bg-amber-50/50 border-b border-amber-100 text-xs text-amber-900 space-y-2">
+            <p class="font-bold text-sm text-amber-800">‼️ 特別注意</p>
+            <ul class="list-disc pl-4 space-y-1">
+                <li>預訂面交取貨，皆須完成匯款即訂單成立。</li>
+                <li>現場無販售，僅提供取貨。</li>
+                <li><span class="text-red-600 font-bold">7/14 中午 12:00 前</span>完成預訂百分百有貨。</li>
+                <li>須<span class="font-bold">冷凍保存</span>，請自備保冷袋+保冷劑。</li>
+                <li>數量有限，額滿將不再接受預訂。</li>
+                <li>需收到烙角回覆才算預訂成功。</li>
+            </ul>
+        </div>
+
+        <!-- 點餐表單 -->
+        <form id="orderForm" class="p-6 space-y-6">
+            
+            <!-- 顧客基本資料 -->
+            <div class="space-y-4">
+                <h3 class="text-base font-bold brand-color border-b pb-1 border-amber-200">1. 基本資料</h3>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">取貨姓名 *</label>
+                    <input type="text" id="name" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 focus:bg-white focus:ring-1 focus:ring-amber-500 text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">聯絡電話 *</label>
+                    <input type="tel" id="phone" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 focus:bg-white focus:ring-1 focus:ring-amber-500 text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">取貨時間 (18:30 - 19:00) *</label>
+                    <select id="time" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 focus:bg-white focus:ring-1 focus:ring-amber-500 text-sm">
+                        <option value="">請選擇時間</option>
+                        <option value="18:30">18:30</option>
+                        <option value="18:40">18:40</option>
+                        <option value="18:50">18:50</option>
+                        <option value="19:00">19:00</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 可麗露品項 -->
+            <div class="space-y-4">
+                <h3 class="text-base font-bold brand-color border-b pb-1 border-amber-200">2. 選擇可麗露（每顆獨立包裝）</h3>
+                
+                <div class="flex items-center justify-between py-1">
+                    <div>
+                        <p class="text-sm font-medium text-gray-800">♠︎ 經典原味</p>
+                        <p class="text-xs text-gray-500">$90 / 顆</p>
+                    </div>
+                    <input type="number" id="item_original" min="0" value="0" onchange="calculateTotal()" class="w-16 rounded-md border-gray-300 p-1 text-center bg-gray-50 text-sm">
+                </div>
+
+                <div class="flex items-center justify-between py-1">
+                    <div>
+                        <p class="text-sm font-medium text-gray-800">♠︎ 茶影（鐵觀音）</p>
+                        <p class="text-xs text-gray-500">$95 / 顆</p>
+                    </div>
+                    <input type="number" id="item_tea" min="0" value="0" onchange="calculateTotal()" class="w-16 rounded-md border-gray-300 p-1 text-center bg-gray-50 text-sm">
+                </div>
+
+                <div class="flex items-center justify-between py-1">
+                    <div>
+                        <p class="text-sm font-medium text-gray-800">♠︎ カカオ（可可）</p>
+                        <p class="text-xs text-gray-500">$105 / 顆</p>
+                    </div>
+                    <input type="number" id="item_cocoa" min="0" value="0" onchange="calculateTotal()" class="w-16 rounded-md border-gray-300 p-1 text-center bg-gray-50 text-sm">
+                </div>
+
+                <div class="flex items-center justify-between py-1">
+                    <div>
+                        <p class="text-sm font-medium text-gray-800">♠︎ 檸檬鹽之花</p>
+                        <p class="text-xs text-gray-500">$95 / 顆</p>
+                    </div>
+                    <input type="number" id="item_lemon" min="0" value="0" onchange="calculateTotal()" class="w-16 rounded-md border-gray-300 p-1 text-center bg-gray-50 text-sm">
+                </div>
+            </div>
+
+            <!-- 加購包裝 -->
+            <div class="space-y-4">
+                <h3 class="text-base font-bold brand-color border-b pb-1 border-amber-200">3. 加購紙盒 / 紙袋</h3>
+                
+                <div class="flex items-center justify-between py-1">
+                    <div>
+                        <p class="text-sm font-medium text-gray-800">經典紙盒 <span class="text-xs text-amber-700">(最多裝4顆)</span></p>
+                        <p class="text-xs text-gray-500">$25 / 個</p>
+                    </div>
+                    <input type="number" id="pack_box" min="0" value="0" onchange="calculateTotal()" class="w-16 rounded-md border-gray-300 p-1 text-center bg-gray-50 text-sm">
+                </div>
+
+                <div class="flex items-center justify-between py-1">
+                    <div>
+                        <p class="text-sm font-medium text-gray-800">手提紙袋 <span class="text-xs text-amber-700">(最多裝3盒)</span></p>
+                        <p class="text-xs text-gray-500">$10 / 個</p>
+                    </div>
+                    <input type="number" id="pack_bag_l" min="0" value="0" onchange="calculateTotal()" class="w-16 rounded-md border-gray-300 p-1 text-center bg-gray-50 text-sm">
+                </div>
+
+                <div class="flex items-center justify-between py-1">
+                    <div>
+                        <p class="text-sm font-medium text-gray-800">小牛皮紙袋 <span class="text-xs text-amber-700">(最多裝6顆)</span></p>
+                        <p class="text-xs text-gray-500">$2 / 個</p>
+                    </div>
+                    <input type="number" id="pack_bag_s" min="0" value="0" onchange="calculateTotal()" class="w-16 rounded-md border-gray-300 p-1 text-center bg-gray-50 text-sm">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">如有加購紙盒，請問如何分裝？</label>
+                    <input type="text" id="pack_note" placeholder="例如：原味*2與可可*2放一盒" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 text-sm">
+                </div>
+            </div>
+
+            <!-- 其他需求 -->
+            <div class="space-y-4">
+                <h3 class="text-base font-bold brand-color border-b pb-1 border-amber-200">4. 其他需求</h3>
+                <div class="flex items-center justify-between">
+                    <label class="text-sm font-medium text-gray-700">食用說明卡需要幾張？</label>
+                    <input type="number" id="card_qty" min="0" value="1" class="w-16 rounded-md border-gray-300 p-1 text-center bg-gray-50 text-sm">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">備註事項</label>
+                    <textarea id="remarks" rows="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 bg-gray-50 text-sm"></textarea>
+                </div>
+            </div>
+
+            <!-- 過敏與溫馨提示 -->
+            <div class="text-[11px] text-gray-400 space-y-1 bg-gray-50 p-3 rounded-lg">
+                <p>📍 產品含有酒精、雞蛋、乳製品、麩質穀物及部分堅果，過敏者請避免食用。</p>
+                <p>📍 可麗露最佳賞味期 3 天，冷凍保存期限 7 天。</p>
+            </div>
+
+            <!-- 總金額顯示 -->
+            <div class="bg-amber-50 p-4 rounded-xl flex justify-between items-center border border-amber-200">
+                <span class="text-sm font-medium brand-color">預計總金額</span>
+                <span class="text-xl font-bold text-amber-900" id="totalPrice">NT$ 0</span>
+            </div>
+
+            <!-- 操作按鈕 -->
+            <div class="space-y-2">
+                <button type="button" onclick="generateOrder()" class="w-full brand-bg text-white font-bold py-3 px-4 rounded-xl shadow-md transition duration-150 cursor-pointer text-sm">
+                    ✨ 產生訂單文字並複製
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // 即時計算總金額
+        function calculateTotal() {
+            const prices = { original: 90, tea: 95, cocoa: 105, lemon: 95, box: 25, bag_l: 10, bag_s: 2 };
+            
+            const total = 
+                (parseInt(document.getElementById('item_original').value) || 0) * prices.original +
+                (parseInt(document.getElementById('item_tea').value) || 0) * prices.tea +
+                (parseInt(document.getElementById('item_cocoa').value) || 0) * prices.cocoa +
+                (parseInt(document.getElementById('item_lemon').value) || 0) * prices.lemon +
+                (parseInt(document.getElementById('pack_box').value) || 0) * prices.box +
+                (parseInt(document.getElementById('pack_bag_l').value) || 0) * prices.bag_l +
+                (parseInt(document.getElementById('pack_bag_s').value) || 0) * prices.bag_s;
+
+            document.getElementById('totalPrice').innerText = `NT$ ${total}`;
+            return total;
+        }
+
+        // 檢查是否有選購商品
+        function hasItems() {
+            return ['item_original', 'item_tea', 'item_cocoa', 'item_lemon'].some(id => (parseInt(document.getElementById(id).value) || 0) > 0);
+        }
+
+        // 產生並複製訂單
+        function generateOrder() {
+            const form = document.getElementById('orderForm');
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+
+            if (!hasItems()) {
+                alert('請至少選擇一個可麗露品項唷！');
+                return;
+            }
+
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const time = document.getElementById('time').value;
+            
+            // 組合品項文字
+            let itemsText = '';
+            if(document.getElementById('item_original').value > 0) itemsText += ` - 經典原味 * ${document.getElementById('item_original').value}\n`;
+            if(document.getElementById('item_tea').value > 0) itemsText += ` - 茶影（鐵觀音） * ${document.getElementById('item_tea').value}\n`;
+            if(document.getElementById('item_cocoa').value > 0) itemsText += ` - カカオ（可可） * ${document.getElementById('item_cocoa').value}\n`;
+            if(document.getElementById('item_lemon').value > 0) itemsText += ` - 檸檬鹽之花 * ${document.getElementById('item_lemon').value}\n`;
+
+            // 組合加購包裝文字
+            let packText = '';
+            if(document.getElementById('pack_box').value > 0) packText += `紙盒*${document.getElementById('pack_box').value} `;
+            if(document.getElementById('pack_bag_l').value > 0) packText += `手提紙袋*${document.getElementById('pack_bag_l').value} `;
+            if(document.getElementById('pack_bag_s').value > 0) packText += `小牛皮紙袋*${document.getElementById('pack_bag_s').value} `;
+            if(!packText) packText = '無';
+
+            const packNote = document.getElementById('pack_note').value || '無';
+            const cardQty = document.getElementById('card_qty').value || '1';
+            const remarks = document.getElementById('remarks').value || '無';
+            const total = calculateTotal();
+
+            // 最終輸出的整齊文字
+            const resultText = `【 烙角｜7/20 快閃預訂訂單 】\n` +
+                               `取貨時間：${time}\n` +
+                               `取貨姓名：${name}\n` +
+                               `聯絡電話：${phone}\n` +
+                               `預訂品項*數量：\n${itemsText}` +
+                               `是否須加購紙盒/紙袋（數量）：${packText}\n` +
+                               `如有加購紙盒如何裝：${packNote}\n` +
+                               `食用說明卡需要幾張：${cardQty} 張\n` +
+                               `備註：${remarks}\n` +
+                               `-------------\n` +
+                               `系統計算總金額：$${total} 元\n\n` +
+                               `*確認無誤請直接發送此訊息，並等候回覆確認。`;
+
+            // 執行複製到剪貼簿
+            navigator.clipboard.writeText(resultText).then(() => {
+                alert('🎉 訂單文字已成功複製到剪貼簿！\n現在可以直接貼上傳送給「烙角」囉！');
+            }).catch(err => {
+                alert('複製失敗，請手動全選複製。');
+            });
+        }
+    </script>
+</body>
+</html>
